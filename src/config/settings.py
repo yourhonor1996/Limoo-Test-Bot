@@ -1,0 +1,5 @@
+TOKEN = '15g1MjRw9iyHJypTDxwz'
+
+GITLAB_PRIVATE_TOKEN_KEY = 'PRIVATE-TOKEN'
+
+GITLAB_API_V4 = "https://gitlab.com/api/v4"
