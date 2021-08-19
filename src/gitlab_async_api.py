@@ -25,8 +25,6 @@ class GitlabAsyncConnection():
         an async init method to run necessary async functions'''
         data = await self.get_data('user')
         self.user_id = data['username']
-        
-    
     
     @classmethod
     async def create(cls, session:ClientSession, token:str, main_url=None):
@@ -36,7 +34,6 @@ class GitlabAsyncConnection():
         instance = GitlabAsyncConnection(session, token, main_url)
         await instance._init_async()
         return instance
-    
     
     async def get_data(self, *urls, **headers_params):
         """Gets a response from the gitlab api with the token in the headers and returns the results as a dictionary.
@@ -67,14 +64,14 @@ class GitlabAsyncConnection():
         
         
 
-async def main():
-    async with aiohttp.ClientSession() as session:
-        connection = await GitlabAsyncConnection.create(session, settings.TOKEN)
-        results = await connection.get_data('user')
+# async def main():
+#     async with aiohttp.ClientSession() as session:
+#         connection = await GitlabAsyncConnection.create(session, settings.TOKEN)
+#         results = await connection.get_data('user')
 
-        print(results)
-        print(connection.user_id)
+#         print(results)
+#         print(connection.user_id)
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())    
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(main())    
         

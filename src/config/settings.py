@@ -18,3 +18,5 @@ VENV_PYTHON_PATH = (BASE_DIR.parent / VENV_FOLDERNAME / "Scripts" / "python.exe"
 BOT_USERNAME = 'test-bot1'
 
 BOT_PASSWORD = 'tyz2jsps2xo9ba2ck3ok'
+
+PROJECTS_FIELD_FILTERS = ['id', 'name','web_url']
