@@ -2,7 +2,6 @@ from pathlib import Path
 
 # this is the src folder 
 BASE_DIR = Path(__file__).resolve().parent.parent
-print(BASE_DIR)
 
 TOKEN = '15g1MjRw9iyHJypTDxwz'
 
@@ -15,3 +14,7 @@ BOTMAIN_FILENAME = 'bot_main'
 VENV_FOLDERNAME = '.venv'
 
 VENV_PYTHON_PATH = (BASE_DIR.parent / VENV_FOLDERNAME / "Scripts" / "python.exe")
+
+BOT_USERNAME = 'test-bot1'
+
+BOT_PASSWORD = 'tyz2jsps2xo9ba2ck3ok'
