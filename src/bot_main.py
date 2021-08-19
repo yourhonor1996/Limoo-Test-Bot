@@ -11,7 +11,6 @@ from src.util import utility
 
 async def respond(event, session):
         data = event['data']
-        # event['data']['message'] = data['event['data']['message']']
 
         if (event['event'] == 'message_created' and not (event['data']['message']['type'] or event['data']['message']['user_id'] == self['id'])):
             message_id = event['data']['message']['id']
@@ -20,20 +19,24 @@ async def respond(event, session):
 
             if event['data']['message']['text'].startswith("/gitlab-projects"):
                 token = event['data']['message']['text'].split()[1]
+                # create a connection to the gilab api- the user_id is stored in the api
                 connection = await GitlabAsyncConnection.create(session, token)
-                projects = await connection.get_data(f'/users/{connection.user_id}/projects')
+                # get all the private projects using the user id and the given parameters
+                projects = await connection.get_data(f'/users/{connection.user_id}/projects', parameters={'visibility':'private'})
 
-                results = []
+                results = "Here are your private projects:\n"
                 filters = settings.PROJECTS_FIELD_FILTERS
-                for project in projects:
-                    results.append(utility.filter_dict(project, filters))
-                response_text = str(results)
+                for i, project in enumerate(projects):
+                    results += f"Project No. {i+1}: "
+                    response_text = utility.format_dict_to_text(project, filters)
+                    results += response_text
+                    # results.append(utility.filter_dict(project, filters))
                 
             
             response = await ld.messages.create(
                 workspace_id= data['workspace_id'],
                 conversation_id= event['data']['message']['conversation_id'],
-                text= response_text,
+                text= results,
                 thread_root_id= thread_root_id or message_id,
                 direct_reply_message_id= direct_reply_message_id)
             

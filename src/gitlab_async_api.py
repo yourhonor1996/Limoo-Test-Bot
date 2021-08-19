@@ -3,7 +3,7 @@ from aiohttp import ClientSession
 import aiohttp
 import json
 from src.config import settings
-
+from src.util import utility
 
 
 class GitlabAsyncConnection():
@@ -38,14 +38,9 @@ class GitlabAsyncConnection():
     async def get_data(self, *urls, **headers_params):
         """Gets a response from the gitlab api with the token in the headers and returns the results as a dictionary.
         
-        The parameters and the headers of the get request must be in the headers_param dictionary, specified with the words:
-        'headers' and 'parameters' as dictionaries.
+        The parameters and the headers of the get request must be given as dictionaries as key arguments 
         
-        Example:
-            headers_params = {
-                'headers': { },
-                'parameters': { },
-                }"""
+            """
                 
         main_url = self.main_url
         for url in urls:
@@ -67,8 +62,12 @@ class GitlabAsyncConnection():
 # async def main():
 #     async with aiohttp.ClientSession() as session:
 #         connection = await GitlabAsyncConnection.create(session, settings.TOKEN)
-#         results = await connection.get_data('user')
-
+#         projects = await connection.get_data(f'/users/{connection.user_id}/projects', parameters={'visibility':'private'})
+#         # results = await connection.get_data('user')
+#         results = ""
+#         for project in projects:
+#             response_text = utility.format_dict_to_text(project, settings.PROJECTS_FIELD_FILTERS)
+#             results += response_text
 #         print(results)
 #         print(connection.user_id)
 
