@@ -37,10 +37,8 @@ class GitlabAsyncConnection():
     
     async def get_data(self, *urls, **headers_params):
         """Gets a response from the gitlab api with the token in the headers and returns the results as a dictionary.
-        
         The parameters and the headers of the get request must be given as dictionaries as key arguments 
-        
-            """
+        """
                 
         main_url = self.main_url
         for url in urls:
@@ -48,8 +46,7 @@ class GitlabAsyncConnection():
             
         parameters = headers_params.get('parameters') if headers_params.get('parameters') else {}
         headers = headers_params.get('headers') if headers_params.get('headers') else {}
-        # filter = headers_params.get('filter') if headers_params.get('filter') else []
-
+        # insert token to headers
         headers.update({settings.GITLAB_PRIVATE_TOKEN_KEY : self.token})
         
         response = await self.session.get(main_url, headers= headers, params= parameters)
