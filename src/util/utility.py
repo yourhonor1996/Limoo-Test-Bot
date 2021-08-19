@@ -15,7 +15,7 @@ def format_dict_to_text(dictionary:dict, filters= None):
         dictionary = filter_dict(dictionary, filters)
     result = ''
     for key, value in dictionary.items():
-        result += f"   {str(key).title()}: {value}\n"
+        result += f"   - {str(key).title()}: {value}\n"
     return result
     
     

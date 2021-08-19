@@ -63,7 +63,7 @@ class GitlabAsyncConnection():
 #         # results = await connection.get_data('user')
 #         results = ""
 #         for project in projects:
-#             response_text = utility.format_dict_to_text(project, settings.PROJECTS_FIELD_FILTERS)
+#             response_text = utility.format_dict_to_text(project, GitlabSettings.PROJECTS_FIELD_FILTERS)
 #             results += response_text
 #         print(results)
 #         print(connection.user_id)
