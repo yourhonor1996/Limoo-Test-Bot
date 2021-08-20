@@ -30,7 +30,7 @@ Runs a **file inside the "src" folder.** The file path should be modular:
 
 ---
 ### نحوه استفاده از از بات در لیمو
-با استفاده از دستوری های زیر میتونید از این بات استفاده بکنید:
+با استفاده از دستور های زیر میتونید از این بات استفاده بکنید:
 
 ### /gitlab-projects : 
 
@@ -42,7 +42,7 @@ Runs a **file inside the "src" folder.** The file path should be modular:
 
 برای مثال:
 
-/gitlab-pojects private <<your_token>>
+/gitlab-pojects private (your token)
 
 ### /help : 
 
