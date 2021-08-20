@@ -27,14 +27,14 @@ class Commands():
     GITLAB_PROJECTS = "/gitlab-projects"
     HELP = "/help"
     HELP_TEXT = """سلام این یک بات تست هست.
-با استفاده از دستوری های زیر میتونید از این بات استفاده بکنید:
+با استفاده از دستور های زیر میتونید از این بات استفاده بکنید:
 /gitlab-projects : 
 بعد از نوشتن این دستور باید نوع پروژه هایی که میخواید مشاهده بکنید رو بنویسید.
 یعنی یکی از سه عبارت "private" – "public" – "internal" و یا "all".
 هر کدوم از سه عبارت بالا باعث میشن انواع پروژه های مربوط با این visibility ها برای شما نشون داده بشه و عبارت all هم تمام پروژه های شما رو براتون لیست میکنه.
 بعد از نوشتن نوع پروژه ها باید gitlab private access token خودتون رو وارد کنید.
 برای مثال:
-/gitlab-pojects private <<your token>>
+/gitlab-pojects private (your token)
 """
 
 class GitlabSettings:

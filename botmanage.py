@@ -2,6 +2,9 @@ from src.config.settings import VENV_PYTHON_PATH, BOTMAIN_FILENAME
 import subprocess
 import sys, os
 
+import subprocess
+from src.config import settings
+import logging
 
 
 
@@ -22,6 +25,12 @@ def main():
     if length == 2:
         if arguments[1] == 'runbot':
             subprocess.check_call([VENV_PYTHON_PATH, '-m', f"src.{BOTMAIN_FILENAME}" ])
+        elif arguments[1] == 'install':
+            venv_path = str(settings.VENV_PYTHON_PATH)
+            subprocess.check_call(['py', '-m', 'venv', settings.VENV_FOLDERNAME])
+            subprocess.check_call([venv_path, '-m', 'pip', 'install', '--upgrade', 'pip'])
+            subprocess.check_call([venv_path,'-m','pip', 'install','-r', settings.REQ_FILENAME])
+            input("\n\nPress Enter to exit")
         else:
             print('Command not liested.')
 
