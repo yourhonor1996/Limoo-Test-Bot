@@ -1,6 +1,35 @@
 # This is a test bot for the limoo platform
 
-سلام این یک بات تست هست.
+
+## How to install the bot:
+    1- install python on your system
+    2- extract the files or fork the repository
+    3- open install.exe 
+
+## How to run the bot
+    1- open terminal and cd to the bot directory (or open a terminal in the directory)
+    2- run this command in the terminal:
+        py runbot.py
+
+### Bot Management Commands
+All bot management commands must be run through "botmange.py"
+
+The commands include:
+#### runbot
+Starts the bot.
+
+    python botmanage.py runbot
+####  install
+Upgrades pip and installs all requirements.
+
+    python botmanage.py install
+#### runfile {modular filename under src}
+Runs a **file inside the "src" folder.** The file path should be modular:
+
+    python botmanage.py runfile utility.gitlab_api
+
+---
+### نحوه استفاده از از بات در لیمو
 با استفاده از دستوری های زیر میتونید از این بات استفاده بکنید:
 
 ### /gitlab-projects : 
