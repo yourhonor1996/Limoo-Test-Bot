@@ -1,4 +1,6 @@
 from pathlib import Path
+import sys
+
 
 # this is the src folder 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,15 +15,20 @@ BOTMAIN_FILENAME = 'bot_main'
 
 VENV_FOLDERNAME = '.venv'
 
-VENV_PYTHON_PATH = (BASE_DIR.parent / VENV_FOLDERNAME / "Scripts" / "python.exe")
-
 BOT_USERNAME = 'test-bot1'
 
 BOT_PASSWORD = 'tyz2jsps2xo9ba2ck3ok'
 
-
-
 REQ_FILENAME = 'requirements.txt'
+
+
+def get_python_path(platform):
+    if platform == 'linux':
+        return BASE_DIR.parent / VENV_FOLDERNAME / "bin" / "python3"
+    else:
+        return BASE_DIR.parent / VENV_FOLDERNAME / "Scripts" / "python.exe"
+
+VENV_PYTHON_PATH = get_python_path(sys.platform)
 
 class Commands():
     GITLAB_PROJECTS = "/gitlab-projects"
