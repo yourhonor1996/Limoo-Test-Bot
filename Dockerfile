@@ -16,4 +16,7 @@ RUN pip install -r requirements.txt
 # copy project
 COPY . /usr/src/app
 
-CMD ["python3", "-m", "src.bot_main"]
+# CMD ["python3", "-m", "src.bot_main"]
+# CMD ["python3", "manage.py", "runserver", "0:8000"]
+ENTRYPOINT ["python3", "manage.py", "runserver"]
+CMD ["0:8000"]

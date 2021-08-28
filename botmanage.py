@@ -19,13 +19,17 @@ def main():
     Example:
         python botmanage.py runfile utility.somefile
     '''
-    
+    platform  = sys.platform
     arguments = sys.argv
     length = len(arguments)
     if length == 2:
         if arguments[1] == 'runbot':
-            subprocess.check_call([VENV_PYTHON_PATH, '-m', f"src.{BOTMAIN_FILENAME}" ])
+            if platform == 'linux':
+                subprocess.check_call(['python3', '-m', f"src.{BOTMAIN_FILENAME}" ])
+            else:
+                subprocess.check_call([VENV_PYTHON_PATH, '-m', f"src.{BOTMAIN_FILENAME}" ])
         elif arguments[1] == 'install':
+            # this install process is only configured for windows not linux, in linux installation is done through dockerfile
             venv_path = str(settings.VENV_PYTHON_PATH)
             subprocess.check_call(['py', '-m', 'venv', settings.VENV_FOLDERNAME])
             subprocess.check_call([venv_path, '-m', 'pip', 'install', '--upgrade', 'pip'])
@@ -36,7 +40,12 @@ def main():
 
     elif length == 3:
         if arguments[1] == 'runfile':
-            subprocess.check_call([VENV_PYTHON_PATH, '-m', f"src.{arguments[2]}"])
+            if platform == 'linux':
+            # this install process is only configured for windows not linux, in linux installation is done through dockerfile
+                subprocess.check_call(['python3', '-m', f"src.{arguments[2]}"])
+            else:
+                subprocess.check_call([VENV_PYTHON_PATH, '-m', f"src.{arguments[2]}"])
+                
         else:
             print('Command not supported.')
     else:
