@@ -30,10 +30,13 @@ def get_python_path(platform):
 
 VENV_PYTHON_PATH = get_python_path(sys.platform)
 
-class Commands():
-    GITLAB_PROJECTS = "/gitlab-projects"
-    HELP = "/help"
-    HELP_TEXT = """سلام این یک بات تست هست.
+
+    
+class Consts():
+    class Commands():
+        GITLAB_PROJECTS = "/gitlab-projects"
+        HELP = "/help"
+        HELP_TEXT = """سلام این یک بات تست هست.
 با استفاده از دستور های زیر میتونید از این بات استفاده بکنید:
 /gitlab-projects : 
 بعد از نوشتن این دستور باید نوع پروژه هایی که میخواید مشاهده بکنید رو بنویسید.
@@ -42,9 +45,9 @@ class Commands():
 بعد از نوشتن نوع پروژه ها باید gitlab private access token خودتون رو وارد کنید.
 برای مثال:
 /gitlab-pojects private (your token)
-"""
-
-class GitlabSettings:
-    PROJECTS_FIELD_FILTERS = ['id', 'name','web_url', 'visibility']
-    VALID_VISIBILITIES = ['public', 'private', 'internal', 'all']
-    TEXT_INVALID_COMMAND = "دستور وارد شده به شکل صحیح نمیباشد. برای اطلاع از نحوه نوشتن دستورات دستور /help را اجرا کنید."
+    """
+    class Gitlab:
+        PROJECTS_FIELD_FILTERS = ['id', 'name','web_url', 'visibility']
+        VALID_VISIBILITIES = ['public', 'private', 'internal', 'all']
+        TEXT_INVALID_COMMAND = "دستور وارد شده به شکل صحیح نمیباشد. برای اطلاع از نحوه نوشتن دستورات دستور /help را اجرا کنید."
+    

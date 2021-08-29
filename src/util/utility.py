@@ -31,21 +31,20 @@ class LimooMessage():
         self.event = event
         self.ld = ld
         self.event_text = event['event']
-        self.message_type = event['data']['message']['type']
+        self.type = event['data']['message']['type']
         self.workspace_id = event['data']['workspace_id']
         self.conversation_id = event['data']['message']['conversation_id']
         self.event_data = event['data']
-
+        self.user_id = event['data']['message']['user_id']
         # message data
         self.text = event['data']['message']['text']
-        self.message_id = event['data']['message']['id']
+        self.id = event['data']['message']['id']
         self.thread_root_id = event['data']['message']['thread_root_id']
-        self.message_user_id = event['data']['message']['user_id']
         
         
     async def reply_in_conversation(self, text):
         """Replies to the message in the same conversation but doesn't directly reply to it"""
-        response = await self.ld.messages.create(
+        await self.ld.messages.create(
             workspace_id= self.workspace_id,
             conversation_id= self.conversation_id,
             text= text)
@@ -53,22 +52,33 @@ class LimooMessage():
     # TODO create a function that responds to a message in a conversation and directly replies to it
 
     async def reply_in_thread(self, text):
-        """Replies to the message in a thread but doesn't directly reply to it"""
-        response = await self.ld.messages.create(
+        """Replies to the message in a thread but doesn't directly reply to it.
+        If the message is in a conversation it will create a thread"""
+        await self.ld.messages.create(
             workspace_id= self.workspace_id,
             conversation_id= self.conversation_id,
             text= text,
-            thread_root_id= self.thread_root_id or self.message_id)
+            thread_root_id= self.thread_root_id or self.id)
 
     async def reply_in_thread_direct(self, text):
-        """Replies to the message in a thread and directly replies to it"""
-        response = await self.ld.messages.create(
+        """Replies to the message in a thread and directly replies to it.
+        If the message is in a conversation it will create a thread"""
+        await self.ld.messages.create(
             workspace_id= self.workspace_id,
             conversation_id= self.conversation_id,
             text= text,
-            thread_root_id= self.thread_root_id or self.message_id,
-            direct_reply_message_id= self.thread_root_id and self.message_id)
+            thread_root_id= self.thread_root_id or self.id,
+            direct_reply_message_id= self.thread_root_id and self.id)
 
+    async def reply_in_same_context(self, text):
+        """Replies to the message in the same context; 
+        meaning that if it is in a conversation it will respond in a conversation,
+        and if it is in a thread it will respond in the same thread"""
+        if self.is_in_conversation:
+            await self.reply_in_conversation(text)
+        if self.is_in_thread:
+            await self.reply_in_thread(text)
+            
     @property
     def is_in_conversation(self):
         """Is the message in a conversation?"""
@@ -77,4 +87,5 @@ class LimooMessage():
     @property
     def is_in_thread(self):
         """Is the message in a thread?"""
-        return (self.message_id is not None) and (self.thread_root_id is not None)
+        return (self.id is not None) and (self.thread_root_id is not None)
+    

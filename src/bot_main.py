@@ -4,28 +4,27 @@ from src.config import settings
 from src.gitlab_async_api import GitlabAsyncConnection
 import aiohttp
 from src.util import utility
-from src.config.settings import Commands, GitlabSettings
+from src.util.utility import LimooMessage
+from src.config.settings import Consts
 
 # TODO creat an event handler class 
 # TODO create conveniece classes for this shit ass sdk
 
 
 async def gitlab_projects(event, session):
-    data = event['data']
-    if (event['event'] == 'message_created' and not (event['data']['message']['type'] or event['data']['message']['user_id'] == self['id'])):
-        message_id = event['data']['message']['id']
-        thread_root_id = event['data']['message']['thread_root_id']
-        direct_reply_message_id = thread_root_id and event['data']['message']['id']
+
+    if (event['event']== 'message_created' and not (event['data']['message']['type'] or event['data']['message']['user_id'] == self['id'])):
+        message = LimooMessage(event, ld)
 
         # if we have a gitlab project command ...
-        if event['data']['message']['text'].startswith(Commands.GITLAB_PROJECTS):
+        if message.text.startswith(Consts.Commands.GITLAB_PROJECTS):
             
-            message_split = event['data']['message']['text'].split()
+            message_split = message.text.split()
             visibility = message_split[1]
             token = message_split[2]
             
-            if not visibility in GitlabSettings.VALID_VISIBILITIES:
-                response_text = GitlabSettings.TEXT_INVALID_COMMAND
+            if not visibility in Consts.Gitlab.VALID_VISIBILITIES:
+                response_text = Consts.Gitlab.TEXT_INVALID_COMMAND
             else:
                 # create a connection to the gilab api- the user_id is stored in the api
                 connection = await GitlabAsyncConnection.create(session, token)
@@ -36,24 +35,17 @@ async def gitlab_projects(event, session):
                     projects = await connection.get_data(f'/users/{connection.user_id}/projects', parameters={'visibility':visibility})
                 
                 response_text = "***Here are your projects:***\n"
-                filters = GitlabSettings.PROJECTS_FIELD_FILTERS
+                filters = Consts.Gitlab.PROJECTS_FIELD_FILTERS
                 for i, project in enumerate(projects):
                     response_text += f"**{i+1} - {project['name']}:**\n"
                     project_text = utility.format_dict_to_text(project, filters)
                     response_text += project_text
                 
-                response = await ld.messages.create(
-                    workspace_id= data['workspace_id'],
-                    conversation_id= event['data']['message']['conversation_id'],
-                    text= response_text)
+                await message.reply_in_thread(response_text)
         
         # if we have a help command
-        if event['data']['message']['text'].startswith(Commands.HELP):
-            text= Commands.HELP_TEXT
-            response = await ld.messages.create(
-                workspace_id= data['workspace_id'],
-                conversation_id= event['data']['message']['conversation_id'],
-                text= text)
+        if message.text.startswith(Consts.Commands.HELP):
+            await message.reply_in_same_context(Consts.Commands.HELP_TEXT)
         
 
 async def main():
