@@ -5,7 +5,7 @@ from src.gitlab_async_api import GitlabAsyncConnection
 import aiohttp
 from src.util import utility
 from src.util.utility import LimooMessage
-from src.config.settings import Consts
+from src.config.settings import Consts, Commands
 
 # TODO creat an event handler class 
 # TODO create conveniece classes for this shit ass sdk
@@ -18,7 +18,7 @@ async def gitlab_respond(event, session):
         
         
         # if we have a gitlab project command ...
-        if message.text.startswith(Consts.Gitlab.CMD_GITLAB_PROJECTS):
+        if message.text.startswith(Commands.Gitlab.CMD_GITLAB_PROJECTS):
             
             message_split = message.text.split()
             visibility = message_split[1]
@@ -45,8 +45,8 @@ async def gitlab_respond(event, session):
                 await message.reply_in_thread(response_text)
         
         # if we have a help command
-        if message.text.startswith(Consts.Help.CMD_HELP):
-            await message.reply_in_same_context(Consts.Help.HELP_TEXT)
+        if message.text.startswith(Commands.Help.CMD_HELP):
+            await message.reply_in_same_context(Commands.Help.HELP_TEXT)
         
 
 async def main():

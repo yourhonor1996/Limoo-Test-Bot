@@ -7,10 +7,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 TOKEN = '15g1MjRw9iyHJypTDxwz'
 
-GITLAB_PRIVATE_TOKEN_KEY = 'PRIVATE-TOKEN'
-
-GITLAB_API_V4 = "https://gitlab.com/api/v4"
-
 BOTMAIN_FILENAME = 'bot_main'
 
 VENV_FOLDERNAME = '.venv'
@@ -32,8 +28,29 @@ VENV_PYTHON_PATH = get_python_path(sys.platform)
 
 
     
-class Consts():
-    class Help():
+class Consts:
+    class Gitlab:
+        API_V4 = "https://gitlab.com/api/v4"
+        PROJECTS_FIELD_FILTERS = ['id', 'name','web_url', 'visibility']
+        VALID_VISIBILITIES = ['public', 'private', 'internal', 'all']
+        TEXT_INVALID_COMMAND = "دستور وارد شده به شکل صحیح نمیباشد. برای اطلاع از نحوه نوشتن دستورات دستور /help را اجرا کنید."
+        PRIVATE_TOKEN_TITLE = 'PRIVATE-TOKEN'
+
+
+class Commands:
+    class Gitlab:
+        # commands
+        CMD_GITLAB_PROJECTS = "/gitlab_projects"
+        CMD_GITLAB_WEBHOOK = "events"
+
+        # states 
+        STATE_START = 0
+        class PROJETS_STATES:
+            GET_PVT_KEY, SHOW_RESULTS = range(1, 3) 
+        class WEBHOOK_STATES:
+            CMD_EVENTS, SHOW_WEBHOOK = range(3, 5) 
+    
+    class Help:
         CMD_HELP = "/help"
         HELP_TEXT = """سلام این یک بات تست هست.
 با استفاده از دستور های زیر میتونید از این بات استفاده بکنید:
@@ -45,15 +62,3 @@ class Consts():
 برای مثال:
 /gitlab-pojects private (your token)
     """
-        
-    class Gitlab():
-        CMD_GITLAB_PROJECTS = "/gitlab-projects"
-        PROJECTS_FIELD_FILTERS = ['id', 'name','web_url', 'visibility']
-        VALID_VISIBILITIES = ['public', 'private', 'internal', 'all']
-        TEXT_INVALID_COMMAND = "دستور وارد شده به شکل صحیح نمیباشد. برای اطلاع از نحوه نوشتن دستورات دستور /help را اجرا کنید."
-
-        class GITLAB_STATES():
-            START, GET_PVT_KEY, SHOW_RESULTS = range(0, 3) 
-        class GITLAB_WEBHOOK_STATES():
-            START, GET_PVT_KEY, SHOW_RESULTS = range(0, 3) 
-    

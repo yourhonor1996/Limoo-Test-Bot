@@ -4,7 +4,7 @@ import aiohttp
 import json
 from src.config import settings
 from src.util import utility
-
+from src.config.settings import Consts
 
 class GitlabAsyncConnection():
     """For making api call, first a client session must be created in the main thread 
@@ -17,7 +17,7 @@ class GitlabAsyncConnection():
     def __init__(self, session:ClientSession, token:str, main_url= None):
         self.session = session
         self.token = token
-        self.main_url = main_url if main_url else settings.GITLAB_API_V4
+        self.main_url = main_url if main_url else Consts.Gitlab.API_V4
         self.user_id = ''
     
     async def _init_async(self):
@@ -47,7 +47,7 @@ class GitlabAsyncConnection():
         parameters = headers_params.get('parameters') if headers_params.get('parameters') else {}
         headers = headers_params.get('headers') if headers_params.get('headers') else {}
         # insert token to headers
-        headers.update({settings.GITLAB_PRIVATE_TOKEN_KEY : self.token})
+        headers.update({Consts.Gitlab.PRIVATE_TOKEN_TITLE : self.token})
         
         response = await self.session.get(main_url, headers= headers, params= parameters)
         content = await response.text()

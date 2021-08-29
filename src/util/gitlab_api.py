@@ -2,6 +2,7 @@
 import requests
 import json
 from src.config import settings
+from src.config.settings import Consts
 
 
 
@@ -9,7 +10,7 @@ class GitlabAPI():
     
     def __init__(self, token:str, main_url= None) -> None:
         self.token = token
-        self.main_url = main_url if main_url else settings.GITLAB_API_V4
+        self.main_url = main_url if main_url else Consts.Gitlab.API_V4
         self.user_id = self.get_user_id()
     
     
@@ -29,7 +30,7 @@ class GitlabAPI():
         parameters = headers_params.get('parameters') if headers_params.get('parameters') else {}
         headers = headers_params.get('headers') if headers_params.get('headers') else {}
         
-        headers.update({settings.GITLAB_PRIVATE_TOKEN_KEY : self.token})
+        headers.update({Consts.Gitlab.PRIVATE_TOKEN_TITLE : self.token})
         response = requests.get(main_url, headers= headers, params= parameters)
         jsonify = json.loads(response.content)
 
