@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'limoo_bot.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'somedb',
+        'NAME': 'limoo',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
-        'PORT': 5432,
+        'HOST': '185.97.118.90',
+        'PORT': 5000,
     }
 }
 
@@ -128,3 +128,5 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'src.User'
