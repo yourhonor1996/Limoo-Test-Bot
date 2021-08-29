@@ -9,13 +9,13 @@ async def respond(event):
     # We have to make sure that the created message is not a system message and
     # that it was not created by us. Non-system messages have "null" as their
     # "type".
-    message = event['data']['message']
     if (event['event'] == 'message_created'
-        and not (message['type']
-                 or message['user_id'] == self['id'])):
-        message_id = message['id']
-        thread_root_id = message['thread_root_id']
-        direct_reply_message_id = message['thread_root_id'] and message['id']
+        and not (event['data']['message']['type']
+                 or event['data']['message']['user_id'] == self['id'])):
+        # message_id = event['data']['message']['id']
+        # thread_root_id = event['data']['message']['thread_root_id']
+        # direct_reply_message_id = event['data']['message']['thread_root_id'] and event['data']['message']['id']
+        
         # If the received message is part of a thread, it will have
         # thread_root_id set and we need to reuse that thread_root_id so that
         # our message ends up in the same thread. We also set
@@ -24,12 +24,21 @@ async def respond(event):
         # message does not have thread_root_id set, we will create a new thread
         # by setting thread_root_id to the id of the received message. In this
         # case, we must set direct_reply_message_id to None.
-        response = await ld.messages.create(
-	    event['data']['workspace_id'],
-	    message['conversation_id'],
-	    message['text'],
-	    thread_root_id=thread_root_id or message_id,
-	    direct_reply_message_id=thread_root_id and message_id)
+        
+        # response = await ld.messages.create(
+        #     event['data']['workspace_id'],
+        #     event['data']['message']['conversation_id'],
+        #     event['data']['message']['text'],
+        #     # thread_root_id=thread_root_id or message_id)
+	    #     direct_reply_message_id= thread_root_id and message_id)
+
+        from src.util.utility import LimooMessage
+        message = LimooMessage(event, ld)
+        # if message.is_in_thread:
+        #     await message.reply_in_thread(message.text)
+        if message.is_in_conversation:
+            await message.reply_in_conversation(message.text)
+        # await message.reply_in_thread_direct(message.text)
 
 async def listen(ld):
     forever = asyncio.get_running_loop().create_future()
