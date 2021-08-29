@@ -11,7 +11,7 @@ from src.config.settings import Consts
 # TODO create conveniece classes for this shit ass sdk
 
 
-async def gitlab_projects(event, session):
+async def gitlab_respond(event, session):
 
     if (event['event']== 'message_created' and not (event['data']['message']['type'] or event['data']['message']['user_id'] == self['id'])):
         message = LimooMessage(event, ld)
@@ -55,7 +55,7 @@ async def main():
         try:
             self = await ld.users.get()
             forever = asyncio.get_running_loop().create_future()
-            ld.set_event_handler(lambda event: asyncio.create_task(gitlab_projects(event, session)))
+            ld.set_event_handler(lambda event: asyncio.create_task(gitlab_respond(event, session)))
             await forever
         finally:
             await ld.close()
