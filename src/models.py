@@ -6,7 +6,7 @@ class User(AbstractUser):
     chat_id = models.CharField(max_length=50)
     
 class Message(models.Model):
-    message_id = models.CharField(max_length=50)
+    thread_id = models.CharField(max_length=50)
     date_created = models.DateTimeField()
     is_active = models.BooleanField()
     user = models.ForeignKey(User, on_delete= models.CASCADE)
