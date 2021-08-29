@@ -33,9 +33,8 @@ VENV_PYTHON_PATH = get_python_path(sys.platform)
 
     
 class Consts():
-    class Commands():
-        GITLAB_PROJECTS = "/gitlab-projects"
-        HELP = "/help"
+    class Help():
+        CMD_HELP = "/help"
         HELP_TEXT = """سلام این یک بات تست هست.
 با استفاده از دستور های زیر میتونید از این بات استفاده بکنید:
 /gitlab-projects : 
@@ -46,8 +45,15 @@ class Consts():
 برای مثال:
 /gitlab-pojects private (your token)
     """
-    class Gitlab:
+        
+    class Gitlab():
+        CMD_GITLAB_PROJECTS = "/gitlab-projects"
         PROJECTS_FIELD_FILTERS = ['id', 'name','web_url', 'visibility']
         VALID_VISIBILITIES = ['public', 'private', 'internal', 'all']
         TEXT_INVALID_COMMAND = "دستور وارد شده به شکل صحیح نمیباشد. برای اطلاع از نحوه نوشتن دستورات دستور /help را اجرا کنید."
+
+        class GITLAB_STATES():
+            START, GET_PVT_KEY, SHOW_RESULTS = range(0, 3) 
+        class GITLAB_WEBHOOK_STATES():
+            START, GET_PVT_KEY, SHOW_RESULTS = range(0, 3) 
     
