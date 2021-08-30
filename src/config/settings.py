@@ -21,7 +21,7 @@ REQ_FILENAME = 'requirements.txt'
 
 HOST_EXT_IP = str(GET("https://api.ipify.org/").content, "utf-8")
 
-WEBHOO_ADDRESS = f"http://{HOST_EXT_IP}/webhook"
+WEBHOO_ADDRESS = f"http://{HOST_EXT_IP}/webhook/"
 
 def get_python_path(platform):
     if platform == 'linux':
