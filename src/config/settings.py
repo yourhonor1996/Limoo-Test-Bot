@@ -35,7 +35,8 @@ VENV_PYTHON_PATH = get_python_path(sys.platform)
     
 class Consts():
     class Gitlab():
-        API_V4 = "https://gitlab.com/api/v4"
+        # API_V4 = "https://gitlab.com/api/v4"
+        API_V4 = "http://185.206.92.17/api/v4"
         PROJECTS_FIELD_FILTERS = ['id', 'name','web_url', 'visibility']
         VALID_VISIBILITIES = ['public', 'private', 'internal', 'all']
         PRIVATE_TOKEN_TITLE = 'PRIVATE-TOKEN'
