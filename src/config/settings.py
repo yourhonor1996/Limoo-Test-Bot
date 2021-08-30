@@ -1,6 +1,6 @@
 from pathlib import Path
 import sys
-
+from requests import get as GET
 
 # this is the src folder 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -11,12 +11,17 @@ BOTMAIN_FILENAME = 'bot_main'
 
 VENV_FOLDERNAME = '.venv'
 
+LIMOO_URL = 'web.limoo.im'
+
 BOT_USERNAME = 'test-bot1'
 
 BOT_PASSWORD = 'tyz2jsps2xo9ba2ck3ok'
 
 REQ_FILENAME = 'requirements.txt'
 
+HOST_EXT_IP = str(GET("https://api.ipify.org/").content, "utf-8")
+
+WEBHOO_ADDRESS = f"http://{HOST_EXT_IP}/webhook"
 
 def get_python_path(platform):
     if platform == 'linux':
@@ -34,6 +39,13 @@ class Consts():
         PROJECTS_FIELD_FILTERS = ['id', 'name','web_url', 'visibility']
         VALID_VISIBILITIES = ['public', 'private', 'internal', 'all']
         PRIVATE_TOKEN_TITLE = 'PRIVATE-TOKEN'
+        WH_TOKEN_BSIZE = 16
+        # headers
+        HEADER_WEHBOOK_TOKEN = "X-Gitlab-Token"
+        HEADER_GITLAB_EVENT = "X-Gitlab-Event"
+        # texts
+        TEXT_EVENT_NOTIF = "You have a new event in gitlab.\n- Event Name: {event_name}"
+        
 
 
 class Commands():
@@ -51,14 +63,20 @@ class Commands():
 
 - دستور events: این دستور رویدادهایی که در یک پروژه از گیت لب رخ میدن رو توی همین گروه بهتون اطلاع میده.
 لطفا یکی از این دو دستور رو وارد کنید:"""
-        
+        TEXT_PROJECTS_GET_PVT_KEY = "لطفا رمز دسترسی شخصی خود را در گیت لب وارد کنید:"
+        TEXT_WEBHOOK_START = """لطفا این URL و Token را در تنظیمات WebHook مورد نظر در گیت لب وارد کنید:
+- URL: {url}
+- Token: {token}"""
+
         # states 
         STATE_START = 0
         STATE_END = -1
+        # other
         class PROJETS_STATES():
             GET_PVT_KEY, SHOW_RESULTS = range(1, 3) 
         class WEBHOOK_STATES():
             CMD_EVENTS, SHOW_WEBHOOK = range(3, 5) 
+            
     
     class Help():
         CMD_HELP = "/help"

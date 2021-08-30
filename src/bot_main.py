@@ -8,6 +8,7 @@ import aiohttp
 from src.util import utility
 from src.util.utility import LimooMessage
 from src.config.settings import Consts, Commands
+import secrets
 
 from src import models
 from asgiref.sync import sync_to_async
@@ -75,12 +76,12 @@ async def gitlab_respond(event, session):
             message.text.strip() == Commands.Gitlab.CMD_GITLAB_PROJECTS):
             # if the user already exists and has a gitlab_token then just show the projects
             if not create_user and user.gitlab_token:
-                await show_private_projects()
-                # CUR_PROJECT_STATE = Commands.Gitlab.STATE_END
                 thread.conv_state = Commands.Gitlab.STATE_END
                 thread.save()
+                await show_private_projects()
+                # CUR_PROJECT_STATE = Commands.Gitlab.STATE_END
             else:
-                await message.reply_in_thread("Please Enter your private key:")
+                await message.reply_in_thread(Commands.Gitlab.TEXT_PROJECTS_GET_PVT_KEY)
                 # CUR_PROJECT_STATE = PROJECTS_STATES.GET_PVT_KEY
                 thread.conv_state = PROJECTS_STATES.GET_PVT_KEY
                 thread.save()
@@ -99,17 +100,21 @@ async def gitlab_respond(event, session):
             else:
                 await message.reply_in_thread("The token is not valid, pleas enter again!")
             
-        
-            
         # # -------------------------WEBHOOK: Start webhook-------------------------- #
-        # # -------------------------WEBHOOK: Command-Events-------------------------- #
-        elif thread.conv_state == WEBHOOK_STATES.CMD_EVENTS:
-        #     ...
-        # # --------------------------WEBHOOK: Show Webhook--------------------------- #
-        # elif CUR_WEBHOOK_STATE == WEBHOOK_STATES.SHOW_WEBHOOK:
-        #         ...
-
-                
+        elif (thread.conv_state == Commands.Gitlab.STATE_START and 
+            message.text.strip() == Commands.Gitlab.CMD_GITLAB_WEBHOOK):
+            
+            if thread.webhook_token:
+                token = thread.webhook_token
+            else:
+                token = secrets.token_hex(Consts.Gitlab.WH_TOKEN_BSIZE)
+                thread.webhook_token = token
+                thread.save()
+            thread.conv_state = Commands.Gitlab.STATE_END
+            thread.save()
+            await message.reply_in_thread(Commands.Gitlab.TEXT_WEBHOOK_START.format(token= token, url= settings.WEBHOO_ADDRESS))
+            
+            
         # if we have a help command
         if message.text.startswith(Commands.Help.CMD_HELP):
             await message.reply_in_same_context(Commands.Help.HELP_TEXT)
@@ -120,7 +125,7 @@ async def main():
         global ld, self
         
         
-        ld = LimooDriver('web.limoo.im', settings.BOT_USERNAME, settings.BOT_PASSWORD)
+        ld = LimooDriver(settings.LIMOO_URL, settings.BOT_USERNAME, settings.BOT_PASSWORD)
         try:
             self = await ld.users.get()
             forever = asyncio.get_running_loop().create_future()

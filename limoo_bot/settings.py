@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'limoo_bot.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'limoo4',
+        'NAME': 'limoo2',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': '127.0.0.1',
