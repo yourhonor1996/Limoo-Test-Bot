@@ -12,7 +12,7 @@ services:
   web:
     build: .
     command: >
-      bash -c "python3 djmanage.py migrate &&
+      sh -c "python3 djmanage.py migrate &&
                python3 djmanage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/docker_code
