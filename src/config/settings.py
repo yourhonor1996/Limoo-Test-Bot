@@ -45,7 +45,12 @@ class Commands():
         
         # command messages
         TEXT_INVALID_COMMAND = "دستور وارد شده به شکل صحیح نمیباشد. برای اطلاع از نحوه نوشتن دستورات دستور /help را اجرا کنید."
-        TEXT_START = f"Start gitlab. Choose {CMD_GITLAB_PROJECTS} or {CMD_GITLAB_WEBHOOK}:"
+        TEXT_START = f"""سلام. من بات گیت لب هستم و از دوتا دستور پشتیبانی میکنم:
+({CMD_GITLAB_PROJECTS}) - ({CMD_GITLAB_WEBHOOK})
+- دستور projects: این دستور لیست پروژه های خصوصی شما رو از گیت لب میگیره و بهتون نمایش میده.
+
+- دستور events: این دستور رویدادهایی که در یک پروژه از گیت لب رخ میدن رو توی همین گروه بهتون اطلاع میده.
+لطفا یکی از این دو دستور رو وارد کنید:"""
         
         # states 
         STATE_START = 0
@@ -57,13 +62,4 @@ class Commands():
     
     class Help():
         CMD_HELP = "/help"
-        HELP_TEXT = """سلام این یک بات تست هست.
-با استفاده از دستور های زیر میتونید از این بات استفاده بکنید:
-/gitlab-projects : 
-بعد از نوشتن این دستور باید نوع پروژه هایی که میخواید مشاهده بکنید رو بنویسید.
-یعنی یکی از سه عبارت "private" – "public" – "internal" و یا "all".
-هر کدوم از سه عبارت بالا باعث میشن انواع پروژه های مربوط با این visibility ها برای شما نشون داده بشه و عبارت all هم تمام پروژه های شما رو براتون لیست میکنه.
-بعد از نوشتن نوع پروژه ها باید gitlab private access token خودتون رو وارد کنید.
-برای مثال:
-/gitlab-pojects private (your token)
-    """
+        HELP_TEXT = """سلام. من بات گیت لب هستم. لطفا برای شروع دستور /gitlab رو وارد کنید."""
