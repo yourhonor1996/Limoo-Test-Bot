@@ -11,7 +11,9 @@ services:
       - POSTGRES_PASSWORD=postgres
   web:
     build: .
-    command: python3 djmanage.py runserver 0.0.0.0:8000
+    command: >
+      bash -c "python3 djmanage.py migrate &&
+               python3 djmanage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/docker_code
     ports:
