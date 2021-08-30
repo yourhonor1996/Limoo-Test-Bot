@@ -1,13 +1,10 @@
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.http import HttpRequest
-# from src.bot_main import ld
 from limoo import LimooDriver
 from src.config import settings
 from django.views.decorators.csrf import csrf_exempt
 from asgiref.sync import async_to_sync, sync_to_async
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from src import models
 
 @sync_to_async
