@@ -17,19 +17,13 @@ from asgiref.sync import sync_to_async
 
 PROJECTS_STATES = Commands.Gitlab.PROJETS_STATES
 WEBHOOK_STATES = Commands.Gitlab.WEBHOOK_STATES
-CUR_PROJECT_STATE = Commands.Gitlab.STATE_END
-CUR_WEBHOOK_STATE = Commands.Gitlab.STATE_END
-
-def save_data(message):
-    user, create_user = models.User.objects.get_or_create(user_id= message.user_id)
-    workspace, create_workspace = models.WorkSpace.objects.get_or_create(user= user, workspace_id= message.workspace_id)
-    conversation, create_conversation = models.Conversation.objects.get_or_create(workspace= workspace, conversation_id= message.conversation_id)
-    return ((user, create_user), (workspace, create_workspace), (conversation, create_conversation))
+# CUR_PROJECT_STATE = Commands.Gitlab.STATE_END
+# CUR_WEBHOOK_STATE = Commands.Gitlab.STATE_END
 
 
 async def gitlab_respond(event, session):
-    global PROJECTS_STATES
-    global WEBHOOK_STATES
+    # global PROJECTS_STATES
+    # global WEBHOOK_STATES
     global CUR_PROJECT_STATE
     global CUR_WEBHOOK_STATE
 
@@ -58,33 +52,45 @@ async def gitlab_respond(event, session):
         user, create_user = models.User.objects.get_or_create(user_id= message.user_id)
         workspace, create_workspace = models.WorkSpace.objects.get_or_create(user= user, workspace_id= message.workspace_id)
         conversation, create_conversation = models.Conversation.objects.get_or_create(workspace= workspace, conversation_id= message.conversation_id)
+
+        # create a message thread in the db
+        thread_root_id = message.thread_root_id or message.id
+        thread, create_thread = models.Thread.objects.get_or_create(conversation= conversation, thread_root_id= thread_root_id)
         
         # # ----------------------------------Gitlab Start----------------------------------- #
         # if we have a /gitlab command ...
         if message.text == Commands.Gitlab.CMD_START:
-            CUR_PROJECT_STATE = Commands.Gitlab.STATE_START
-            CUR_WEBHOOK_STATE = Commands.Gitlab.STATE_START
+            # CUR_PROJECT_STATE = Commands.Gitlab.STATE_START
+            # CUR_WEBHOOK_STATE = Commands.Gitlab.STATE_START
+            thread.conv_state = Commands.Gitlab.STATE_START
+            thread.save()
             await message.reply_in_thread(Commands.Gitlab.TEXT_START)
 
         # # ----------------------------------PROJECTS: Start----------------------------------- #
-        elif CUR_PROJECT_STATE == Commands.Gitlab.STATE_START and message.text == Commands.Gitlab.CMD_GITLAB_PROJECTS:
+        elif thread.conv_state == Commands.Gitlab.STATE_START and message.text == Commands.Gitlab.CMD_GITLAB_PROJECTS:
             # if the user already exists and has a gitlab_token then just show the projects
             if not create_user and user.gitlab_token:
                 await show_private_projects()
-                CUR_PROJECT_STATE = Commands.Gitlab.STATE_END
+                # CUR_PROJECT_STATE = Commands.Gitlab.STATE_END
+                thread.conv_state = Commands.Gitlab.STATE_END
+                thread.save()
             else:
                 await message.reply_in_thread("Please Enter your private key:")
-                CUR_PROJECT_STATE = PROJECTS_STATES.GET_PVT_KEY
+                # CUR_PROJECT_STATE = PROJECTS_STATES.GET_PVT_KEY
+                thread.conv_state = PROJECTS_STATES.GET_PVT_KEY
+                thread.save()
 
         # ------------------------PROJECTS: Get Private Key------------------------- #
-        elif CUR_PROJECT_STATE == PROJECTS_STATES.GET_PVT_KEY:
+        elif thread.conv_state == PROJECTS_STATES.GET_PVT_KEY:
             user_token = str(message.text).strip()
             # if the token is valid -> proceed, else -> ask for it again (the state won't change)
             if utility.validate_gitlab_token(user_token):
                 user.gitlab_token = user_token
                 user.save()
                 await show_private_projects()
-                CUR_PROJECT_STATE = Commands.Gitlab.STATE_END
+                # CUR_PROJECT_STATE = Commands.Gitlab.STATE_END
+                thread.conv_state = Commands.Gitlab.STATE_END
+                thread.save()
             else:
                 await message.reply_in_thread("The token is not valid, pleas enter again!")
             
