@@ -1,5 +1,6 @@
 from limoo import LimooDriver
-
+import os
+from django import setup
 
 def filter_dict(dictionary:dict, filters:list):
     '''Filters the dictionary and returns a new dictionary based on the filterd keys'''
@@ -19,7 +20,20 @@ def format_dict_to_text(dictionary:dict, filters= None):
     for key, value in dictionary.items():
         result += f"   - {str(key).title()}: {value}\n"
     return result
-    
+
+def validate_gitlab_token(token:str):
+    # TODO implement this function or create a django ModelForm to validate the data
+    return True
+
+def config_django():
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'limoo_bot.settings')
+    # TODO make the code run without making django async unsafe
+    os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
+    # from django.core.asgi import get_asgi_application
+    # application = get_asgi_application()
+    setup()  
+
 
 class LimooMessage():
     """Creates an instance of limoo message which can be used to get message data or reply 

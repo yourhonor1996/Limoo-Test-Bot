@@ -28,29 +28,34 @@ VENV_PYTHON_PATH = get_python_path(sys.platform)
 
 
     
-class Consts:
-    class Gitlab:
+class Consts():
+    class Gitlab():
         API_V4 = "https://gitlab.com/api/v4"
         PROJECTS_FIELD_FILTERS = ['id', 'name','web_url', 'visibility']
         VALID_VISIBILITIES = ['public', 'private', 'internal', 'all']
-        TEXT_INVALID_COMMAND = "دستور وارد شده به شکل صحیح نمیباشد. برای اطلاع از نحوه نوشتن دستورات دستور /help را اجرا کنید."
         PRIVATE_TOKEN_TITLE = 'PRIVATE-TOKEN'
 
 
-class Commands:
-    class Gitlab:
+class Commands():
+    class Gitlab():
         # commands
-        CMD_GITLAB_PROJECTS = "/gitlab_projects"
+        CMD_START = "/gitlab"
+        CMD_GITLAB_PROJECTS = "projects"
         CMD_GITLAB_WEBHOOK = "events"
-
+        
+        # command messages
+        TEXT_INVALID_COMMAND = "دستور وارد شده به شکل صحیح نمیباشد. برای اطلاع از نحوه نوشتن دستورات دستور /help را اجرا کنید."
+        TEXT_START = f"Start gitlab. Choose {CMD_GITLAB_PROJECTS} or {CMD_GITLAB_WEBHOOK}:"
+        
         # states 
         STATE_START = 0
-        class PROJETS_STATES:
+        STATE_END = -1
+        class PROJETS_STATES():
             GET_PVT_KEY, SHOW_RESULTS = range(1, 3) 
-        class WEBHOOK_STATES:
+        class WEBHOOK_STATES():
             CMD_EVENTS, SHOW_WEBHOOK = range(3, 5) 
     
-    class Help:
+    class Help():
         CMD_HELP = "/help"
         HELP_TEXT = """سلام این یک بات تست هست.
 با استفاده از دستور های زیر میتونید از این بات استفاده بکنید:
